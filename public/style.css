@@ -1,0 +1,911 @@
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+#map {
+  width: 75vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.containerMain {
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: white;
+  z-index: 10;
+  overflow-y: auto;
+  box-shadow: -5px 0px 15px -2px rgba(34, 60, 80, 0.2);
+}
+
+/* Стили для навигационной панели */
+.containerNavBar {
+  overflow-y: auto;
+  height: 35vh;
+  background-image: url('./img/wallpapers/wallpaper1-dark.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.btnNavbar {
+  margin: 10px;
+  padding: 10px;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.btnNavbar:hover {
+  transform: scale(1.1);
+}
+
+.btnNavbarImg {
+  width: 30px;
+  height: auto;
+}
+
+/* Стили для навигационной панели */
+
+/* Панель поиск */
+.search {
+  height: 7vh;
+}
+
+#searchInput {
+  /* padding: 5px; */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  flex-grow: 1;
+  /* Растягиваем input на всю доступную ширину */
+}
+
+.searchControl {
+  margin: 10px 10px 0 10px;
+  /* position: relative; */
+  display: flex;
+  align-items: center;
+}
+
+#searchResults {
+  /* position: fixed; */
+  /* right: 0; */
+  width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 0;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#searchResults div {
+  border: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
+}
+
+#searchResults div:hover {
+  background-color: #f5f5f5;
+}
+
+/* Панель поиск */
+
+
+/* Панель вкладок */
+.containerTab {
+  background-color: #ecebeb;
+  width: 100%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tabTitle {
+  font-style: italic;
+  color: rgb(110, 110, 110);
+}
+
+/* Панель вкладок */
+
+
+
+/* Формы */
+.formIPP,
+.formPol {
+  display: none;
+}
+
+.formIPP.active {
+  display: block;
+}
+
+.formPol.active {
+  display: block;
+}
+
+.formPol .formTitle {
+  font-size: 24px;
+  padding-left: 10%;
+}
+
+.formIPP,
+.formPol,
+.form3,
+.form4,
+.form5,
+.form6,
+.formSearch {
+  display: none;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+.backBtn {
+  position: absolute;
+  left: 0;
+  background-color: #4CAF50;
+  border: none;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 2px 12px;
+  display: flex;
+  justify-content: center;
+  /* Выравнивание по горизонтали */
+  align-items: center;
+  /* Выравнивание по вертикали */
+}
+
+.backBtn:hover {
+  background-color: #45a049;
+}
+
+.formTitleBack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.formTitle {
+  margin: 0;
+}
+
+.formDesc {
+  font-style: italic;
+  margin-top: 30px;
+}
+
+.input2 {
+  margin: 10px;
+}
+
+.btn2 {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 12px 28px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition-duration: 0.4s;
+}
+
+.btn2:hover {
+  background-color: #45a049;
+}
+
+/* Формы */
+
+/* Моменты формы */
+.formLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+
+.formTextarea,
+.formInput {
+  width: 80%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.formTextarea {
+  resize: vertical;
+  /* Разрешаем вертикальное изменение размера textarea */
+}
+
+/* Моменты формы */
+
+
+
+.modal2 {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content2 {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: center;
+}
+
+
+
+
+/* Кнопки в базовых карт */
+.btnBaseMap {
+  background-color: #f9f9f9;
+  border: 1px solid #9999;
+  border-radius: 2px;
+  margin: 0 5px 0 5px;
+  padding: 5px;
+  transition: .2s linear;
+  width: 120px;
+}
+
+.imgBaseMap {
+  opacity: 0.9;
+  transition: transform 0.3s ease;
+}
+
+.imgBaseMap:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.activeMap {
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 2px;
+  opacity: 1;
+  padding: 2px;
+  transform: scale(1.1);
+}
+
+/* Кнопки в базовых карт */
+
+
+/* Карточки инцидентов */
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+/* Стили для кнопки мусорки */
+.btnCard {
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  padding: 6px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid #3a3a3b;
+  transition: .5s;
+}
+
+.btnCard:hover {
+  border-color: transparent;
+}
+
+.formCard {
+  padding: 10px;
+  display: flex;
+  max-height: 58vh;
+  flex-direction: column;
+}
+
+.listCard {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  border: 0;
+}
+
+.listCard button {
+  margin-bottom: 10px;
+}
+
+.user-card,
+.cardNew {
+  padding: 5px;
+  border: 1px solid #ccc;
+  /* border-radius: 10px; */
+  transition: 0.3s;
+  background-color: #fff;
+  position: relative;
+
+}
+
+.user-card:hover {
+  border: 1px solid #332a2a;
+}
+
+.cardNew:hover {
+  border: 1px solid #332a2a;
+}
+
+.user-card.active {
+  /* background-color: rgb(64, 248, 143); */
+  /* color: rgb(0, 151, 66); */
+}
+
+.user-card.completed {
+  /* background-color: rgb(181, 177, 177); */
+}
+.user-card.active:hover {
+  background-color: rgb(29, 235, 118);
+  border: 1px solid rgb(64, 248, 143);
+}
+
+.user-card.completed:hover {
+  border: 1px solid  rgb(181, 177, 177);
+  background-color: rgb(240, 70, 70);
+
+}
+
+.cardStatus {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 5px;
+  position: relative;
+}
+/* .user-card.active::before {
+  content: '';
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: rgb(29, 235, 118);
+  margin-right: 8px;
+  position: absolute;
+  top: 15%;
+  transform: translateY(-50%);
+  left: 300px; 
+}
+.user-card.completed::before {
+  content: '';
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: rgb(240, 70, 70);
+  margin-right: 8px; 
+  position: absolute;
+  top: 15%;
+  transform: translateY(-50%);
+  left: 300px; 
+} */
+
+.cardStatus::first-letter {
+  text-transform: uppercase;
+}
+
+.cardDesc {
+  margin: 0;
+  color: #444;
+  font-style: italic;
+  margin-bottom: 5px;
+}
+.cardTime {
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+
+/* .cardLatitude {
+  margin: 0;
+}
+
+.cardLongitude {
+  margin: 0;
+} */
+
+
+/* Стилизация полосы прокрутки */
+.listCard::-webkit-scrollbar {
+  width: 7px;
+}
+
+.listCard::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.listCard::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+.listCard::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* Новые карточки инцидентов */
+
+/* Форма сохранения карточек */
+.formCardSave {
+  text-align: center;
+}
+
+/* Форма сохранения карточек */
+
+.form4 label {
+  font-size: 16px;
+  margin-top: 15px;
+  /* font-weight: 700; */
+}
+
+/* Справочник (модальное окно) */
+.modal-window {
+  display: none;
+  /* По умолчанию скрыто */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 75%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 800px;
+  width: 90%;
+  display: flex;
+  /* Для размещения навигации и контента в строку */
+}
+
+.navigation {
+  flex: 1;
+  /* Занимает всю доступную ширину */
+  margin: 20px 0 0;
+  border-right: 1px solid #ccc;
+  /* Добавляем вертикальную линию между навигацией и контентом */
+  padding-right: 20px;
+  /* Отступ справа для разделения от контента */
+}
+
+.content {
+  overflow-y: auto;
+  max-height: 500px;
+  flex: 3;
+  /* Занимает 3/4 доступной ширины */
+  padding-left: 20px;
+  /* Отступ слева для разделения от навигации */
+}
+
+/* Стили для скроллбара */
+.content::-webkit-scrollbar {
+  width: 8px;
+  /* Ширина скроллбара */
+}
+
+.content::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  /* Цвет фона трека скроллбара */
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: #999;
+  /* Цвет ползунка скроллбара */
+  border-radius: 4px;
+  /* Радиус скругления ползунка */
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background-color: #888;
+  /* Цвет ползунка при наведении */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Стили для навигации */
+.navTitle {
+  text-align: center;
+  margin-top: 0;
+  /* Убираем верхний отступ для заголовка */
+}
+
+.navigation ul {
+  list-style-type: none;
+  /* Убираем маркеры у списка */
+  padding: 0;
+}
+
+.navigation li {
+  margin-bottom: 10px;
+  /* Отступ между пунктами списка */
+}
+
+.navigation a {
+  text-decoration: none;
+  color: #333;
+}
+
+.navigation a:hover {
+  color: #666;
+}
+
+
+.listNavSite {
+  display: flex;
+  /* Делаем дочерние элементы идти в одну строку */
+  flex-direction: column;
+  /* Располагаем их в столбец */
+}
+
+.itemNavSite {
+  display: flex;
+  /* Потомки itemNavSite идут как flex */
+  align-items: center;
+  /* Выравниваем их содержимое по центру */
+  margin-bottom: 20px;
+  /* Добавляем отступ между элементами */
+}
+
+.imgNavSite {
+  width: 30px;
+  /* Задаем ширину изображения */
+  margin: 0 10px;
+  /* Отступ справа от изображения */
+}
+
+.itemNavSite p {
+  margin: 0;
+  /* Убираем внешние отступы у абзаца */
+}
+
+/* Справочник (модальное окно) */
+
+
+
+#contextMenu {
+  background-color: white;
+  display: none;
+  position: fixed;
+  bottom: 50px;
+  left: 50px;
+  border: 1px solid black;
+  z-index: 1000;
+  height: 50px;
+  width: 200px;
+}
+
+.contextMenuItem:hover {
+  background-color: #999;
+}
+
+
+/* Вход */
+/* Стиль для затемнения фона */
+.modalRegistration-overlay {
+  background-color: rgba(0, 0, 0, 0.85);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Стиль для модального окна */
+.modalRegistration {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 30px;
+  width: 400px;
+  max-width: 80%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+/* Стили для формы */
+.loginImg {
+  width: 150px;
+  margin: 30px;
+}
+
+.modalRegistration form {
+  display: flex;
+  flex-direction: column;
+
+}
+.modalRegistration label {
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.loginTitle {
+  margin-bottom: 0;
+  font-size: 28px;
+}
+#loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+#login,
+#pass {
+  margin-bottom: 20px;
+  background-color: #fff;
+  /* border: none; */
+  padding: 15px;
+  border: 1px solid #aae859;
+  font-size: 20px;
+  box-sizing: border-box;
+}
+
+.loginBtn {
+  /* background-color: #007bff; */
+  background-color: #aae859;
+  color: #fff;
+  border: none;
+  padding: 10px 80px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 20px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.modalRegistration button[type="submit"]:hover {
+  /* background-color: #0056b3; */
+  background-color: #71d954;
+}
+
+.password-field {
+  -webkit-text-security: disc;
+}
+
+.error-message {
+  border: 1px solid #dc3545;
+  border-radius: 5px;
+  color: #dc3545;
+  margin-top: 10px;
+  display: none;
+  max-width: 60%;
+  padding: 5px;
+}
+
+/* Вход */
+
+
+/* Медиа запросы */
+
+
+
+
+/* Адаптация для планшетов */
+@media (max-width: 1200px) {
+  #map {
+    width: 70vw;
+    height: 100vh;
+  }
+
+  .containerMain {
+    width: 30vw;
+    height: 100vh;
+  }
+}
+
+/* Адаптация для телефонов */
+@media (max-width: 900px) {
+  #map {
+    width: 100vw;
+    height: 60vh;
+  }
+
+  .containerMain {
+    width: 100vw;
+    height: 40vh;
+    position: static;
+    top: auto;
+    right: auto;
+    box-shadow: none;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0px -5px 15px -2px rgba(34, 60, 80, 0.2);
+  }
+
+  .containerNavBar {
+    width: 40%;
+    height: 40vh;
+  }
+
+  .containerTab {
+    border-top: 1px solid rgb(179, 168, 168);
+    width: 60%;
+    background-color: transparent;
+    height: 40vh;
+    overflow-y: auto;
+  }
+
+  .formIPP,
+  .formPol,
+  .form3,
+  .form4,
+  .form5,
+  .form6,
+  .formSearch {
+    background-color: #fff;
+    border: none;
+    display: none;
+    height: 100%;
+  }
+
+  .formPol .formTitle,
+  .formIPP .formTitle {
+    font-size: 20px;
+    padding-left: 10%;
+}
+
+
+@media (max-width: 1000px) {
+  #map {
+    width: 100vw;
+    height: 70vh;
+  }
+
+  .containerMain {
+    width: 100vw;
+    height: 30vh;
+    position: static;
+    top: auto;
+    right: auto;
+    box-shadow: none;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0px -5px 15px -2px rgba(34, 60, 80, 0.2);
+  }
+
+  .containerNavBar {
+    width: 40%;
+    height: 30vh;
+  }
+
+  .containerTab {
+    border-top: 1px solid rgb(179, 168, 168);
+    width: 60%;
+    background-color: transparent;
+    height: 30vh;
+    overflow-y: auto;
+  }
+
+  .formIPP,
+  .formPol,
+  .form3,
+  .form4,
+  .form5,
+  .form6,
+  .formSearch {
+    box-shadow: none;
+    border: none;
+    background-color: #fff;
+    display: none;
+    height: 100%;
+  }
+
+  .modal-window {
+    width: 100%;
+    height: 70%;
+  }
+  
+  .modal-content {
+    margin: 5% auto;
+    padding: 10px;
+    max-width: 700px;
+  }
+
+
+
+  .search {
+    height: 7vh;
+  }
+  
+  #searchInput {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex-grow: 1;
+    /* Растягиваем input на всю доступную ширину */
+  }
+  
+  .searchControl {
+    margin: 10px 10px 0 10px;
+    /* position: relative; */
+    display: flex;
+    align-items: center;
+  }
+  
+  #searchResults {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 0;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  #searchResults div {
+    border: 1px solid #ccc;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  #searchResults div:hover {
+    background-color: #f5f5f5;
+  }
+  
+}

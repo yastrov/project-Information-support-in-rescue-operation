@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Информационная поддержка ПСО</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="style.css">
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=<YOUR_API_KEY>"
+        type="text/javascript"></script>
+    <script src="https://yandex.st/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+    <link href="https://yandex.st/bootstrap/2.2.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+</head>
+
+<body>
+    <div class="modalRegistration-overlay" id="modalOverlay">
+        <div class="modalRegistration">
+            <h2 class="loginTitle">Добро пожаловать!</h2>
+            <img src="/img/login/user.png" class="loginImg" aalt="">
+            <form id="loginForm">
+                <input type="text" id="login" name="login" placeholder="Логин" required>
+    
+                <input type="text" id="pass" class="password-field" placeholder="Пароль" title="">
+                
+                <button class="loginBtn" type="submit">Войти</button>
+                <p class="error-message" id="errorMessage">Неверный логин или пароль</p>
+            </form>
+            
+        </div>
+    </div>
+    <div class="container-map" id="map"></div>
+    <div class="containerMain">
+        <div class="containerNavBar">
+            <div class="navbar">
+                <button class="btnNavbar" id="saveCard">
+                    <img src="/img/save2.png" class="btnNavbarImg" alt="">
+                </button>
+                <button class="btnNavbar" id="openFormBtn5">
+                    <img src="/img/list.png" class="btnNavbarImg" alt="">
+                </button>
+                <button class="btnNavbar" id="openFormBtn4">
+                    <img src="/img/note.png" class="btnNavbarImg" alt="">
+                </button>
+                <button class="btnNavbar" id="openFormBtn3">
+                    <img src="/img/basemap.png" class="btnNavbarImg" alt="">
+                </button>
+                <button class="btnNavbar" id="btnSearch">
+                    <img src="/img/search.png" class="btnNavbarImg" alt="">
+                </button>
+                <button class="btnNavbar" id="buttonDownload">
+                    <img src="/img/download.png" class="btnNavbarImg" alt="">
+                </button>
+                <input type="file" id="fileInput" style="display: none;">
+                <button class="btnNavbar" id="btnNeighbour">
+                    <img src="/img/line.png" class="btnNavbarImg" alt="">
+                </button>
+                <button class="btnNavbar" id="buttonLocation">
+                    <img src="/img/location.png" class="btnNavbarImg" alt="">
+                </button>
+                <button class="btnNavbar" id="buttonDeletePol">
+                    <img src="/img/bin.png" class="btnNavbarImg" alt="">
+                </button>
+                <button class="btnNavbar" id="openModalBtn">
+                    <img src="/img/question.png" class="btnNavbarImg" alt="">
+                </button>
+                <!-- <button class="btnNavbar" id="createLine">
+                    <img src="" class="btnNavbarImg" alt="">
+                </button> -->
+            </div>
+        </div>
+
+
+
+        <!-- Панель вкладок -->
+        <div class="containerTab">
+            <p class="tabTitle" id="formBase">Окно для инструментария</p>
+
+            <!-- Форма для базовых карт -->
+            <div class="form3" id="form3">
+                <form>
+                    <h3 class="formTitle">Базовые карты</h3>
+                    <button class="btnBaseMap" type="button" id="map1">
+                        <img class="imgBaseMap activeMap" src="./img/map.png" alt="Картинка" data-map-type="yandex#map">
+                    </button>
+                    <button class="btnBaseMap" type="button" id="map2">
+                        <img class="imgBaseMap" src="./img/satellite.png" alt="Картинка"
+                            data-map-type="yandex#satellite">
+                    </button>
+                    <button class="btnBaseMap" type="button" id="map3">
+                        <img class="imgBaseMap" src="./img/hybrid.png" alt="Картинка" data-map-type="yandex#hybrid">
+                    </button>
+                </form>
+            </div>
+
+            <!-- Форма для поиска -->
+            <div class="formSearch" id="formSearch">
+                <form>
+                    <h3 class="formTitle">Поиск</h3>
+                    <div class="search">
+                        <div class="searchControl">
+                            <input type="text" id="searchInput" placeholder="Поиск" oninput="showSuggestions()">
+                            <!-- <div class="close" id="clearSearch">&times;</div> -->
+                        </div>
+                        <div id="searchResults"></div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Ниже Форма сохранения карточек -->
+            <div class="form6" id="form6">
+                <form class="formCardSave" id="formData">
+                    <h3 class="formTitle">Форма регистрации инцидентов</h3>
+                    <select id="status" name="status" class="formSelect" style="display: none;">
+                        <option value="active">Активный</option>
+                        <option value="completed">Завершенно</option>
+                    </select>
+                    <div class="formCardSaveBtn">
+                        <button class="btnNavbar" id="openFormBtnIPP" type="button">
+                            <img src="/img/radar.png" class="btnNavbarImg" title="Создание IPP" alt="">
+                        </button>
+                        <button class="btnNavbar" id="openFormBtnPol" type="button">
+                            <img src="/img/polygon.png" class="btnNavbarImg"
+                                title="Создание теоретической области поиска" alt="">
+                        </button>
+                    </div>
+
+                    <label for="description" class="formLabel">Описание:</label>
+                    <textarea id="description" name="description" autocomplete="off" class="formTextarea"></textarea>
+                    <label for="latitude" class="formLabel">Широта:</label>
+                    <input type="text" id="latitude" name="latitude" autocomplete="off" class="formInput">
+                    <label for="longitude" class="formLabel">Долгота:</label>
+                    <input type="text" id="longitude" name="longitude" autocomplete="off" class="formInput">
+                    <label for="time_user" class="formLabel">Времени прошло:</label>
+                    <input type="text" id="time_user" name="time_user" autocomplete="off" class="formInput">
+                    <button class="btn2" type="submit">Добавить инцидент</button>
+                </form>
+            </div>
+
+            <div class="formIPP innerForm" id="formIPP">
+                <form>
+                    <div class="formTitleBack">
+                        <button class="backBtn" type="button" id="backToMainFormIPP">&#8592;</button>
+                        <h3 class="formTitle">Создание IPP</h3>
+                    </div>
+                    <input type="text" class="input2" id="varX" placeholder="Введите X"><br>
+                    <input type="text" class="input2" id="varY" placeholder="Введите Y">
+                    <p>либо кликните по карте</p>
+
+                    <button class="btn2" type="button" id="buttonCreateIPP">Создать IPP</button>
+                    <p class="formDesc">Описание: инструмент позволяет создать последнее известное положение
+                        потерявшегося</p>
+                    <!-- <button class="btn2" type="button" id="backToMainFormIPP">Назад</button> -->
+                </form>
+            </div>
+
+            <div class="formPol innerForm" id="formPol">
+                <form>
+                    <div class="formTitleBack">
+                        <button class="backBtn" type="button" id="backToMainFormPol">&#8592;</button>
+                        <h3 class="formTitle">Создание теоретической области поиска</h3>
+                    </div>
+                    <input type="text" class="input2" id="kmDist" placeholder="Введите кол-во часов"><br>
+                    <button class="btn2" type="button" id="buttonCreatePol">Область поиска</button>
+                    <!-- <button class="btn2" type="button" id="buttonCreateHeightMap">Карта высот</button> -->
+                    <p class="formDesc">Описание: инструмент позволяющий создать область, который мог пройти
+                        потерпевший</p>
+                </form>
+            </div>
+
+            <!-- Ниже Форма карточек инцидентов -->
+            <div class="form5" id="form5">
+                <form class="formCard" id="formData">
+                    <div class="cardTitle">
+                        <h3>Список инцидентов</h3>
+                        <!-- <button type="button" class="btnCard" id="btnDelCard">
+                            <img src="/img/bin.png" class="btnNavbarImg" alt="">
+                        </button> -->
+                    </div>
+                    <div class="listCard" id="listCard">
+                        <% data.forEach(function(item) { %>
+                            <button type="button"
+                                class="user-card <%= item.status === 'active' ? 'active' : 'completed' %>" <% if
+                                (item.status==='completed' ) { %>
+                                id="cardCompleted"
+                                <% } else if (item.status==='active' ) { %>
+                                    id="cardActive"
+                                    <% } %>
+                                        data-status="<%= item.status %>"
+                                            data-description="<%= item.description %>"
+                                                data-latitude="<%= item.latitude %>"
+                                                    data-longitude="<%= item.longitude %>"
+                                                        data-time_user="<%= item.time_user %>">
+                                                        <p class="cardStatus">
+                                                            <% if (item.status === 'active') { %>
+                                                                Активный
+                                                            <% } else if (item.status === 'completed') { %>
+                                                                Завершенный
+                                                            <% } else { %>
+                                                                <%= item.status %>
+                                                            <% } %>
+                                                        </p>
+                                                            <p class="cardDesc">Описание: <%= item.description %>
+                                                            </p>
+                                                            <!-- <p class="cardLatitude">Latitude: <%= item.latitude %></p> -->
+                                                            <!-- <p class="cardLongitude">Longitude: <%= item.longitude %></p> -->
+                                                            <p class="cardTime">Времени прошло: <%= item.time_user %>
+                                                            </p>
+                            </button>
+                            <% }); %>
+                    </div>
+                </form>
+            </div>
+
+
+            <!-- Форма для cоздания областей заметок -->
+            <div class="form4" id="form4">
+                <form>
+                    <h3 class="formTitle">Создание областей заметок</h3>
+                    <br>
+                    <button class="btn2" type="button" id="draw1">Нарисовать область</button>
+                    <br>
+                    <label  for="inputDraw">Введите заметку</label>
+                    <textarea id="inputDraw" name="inputDraw" autocomplete="off" style="overflow: auto;"></textarea>
+                    <br>
+                    <button class="btn2" type="button" id="saveDraw">Сохранить</button><br>
+                    <p class="formDesc">Описание: инструмент позволяет выделить участок местности и оставить комментарий
+                    </p>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Справочник Модальное окно -->
+    <div id="myModal" class="modal-window">
+        <div class="modal-content">
+            <div class="navigation">
+                <ul>
+                    <!-- <li><a href="#" class="navLink" data-content="content1">Руководство пользователя</a></li> -->
+                    <li><a href="#" class="navLink" data-content="content1">Памятка</a></li>
+                    <li><a href="#" class="navLink" data-content="content2">Навигация</a></li>
+                </ul>
+            </div>
+            <!-- <div class="content" id="content1">
+                <h3 class="navTitle">Описание проекта</h3>
+                <p>Проект направлен на обеспечение информационной поддержки в поисково-спасательных операциях путем
+                    создания веб-приложения.</p>
+                <p>Веб-приложение должно обеспечивать возможность ввода и отображения информации о поисково-спасательной
+                    операции, координации действий команды и обмена информацией между участниками операции. </p>
+                <p>Оно также
+                    будет включать инструменты, предоставляющие функциональные возможности для управления
+                    поисково-спасательными операциями, что значительно повысит уровень информационной поддержки таких
+                    операций. Эти инструменты позволят оптимизировать процесс поиска и спасения, улучшить взаимодействие
+                    между командами и службами, а также обеспечить более эффективное и своевременное реагирование на
+                    чрезвычайные ситуации..</p>
+            </div> -->
+            <div class="content" id="content1">
+                <h3 class="navTitle">Памятка для добровольцев по поиску и спасению</h3>
+                <p>Уважаемые добровольцы!</p>
+                <p>Благодарим вас за готовность принять участие в поисково-спасательной операции с использованием нашего
+                    веб-приложения. Ниже приведены основные рекомендации и инструкции для вашей безопасности и
+                    эффективности действий:</p>
+                <ol>
+                    <li><strong>Ознакомление с веб-приложением:</strong>
+                        <ul>
+                            <li>Перед началом операции ознакомьтесь с интерфейсом и функциональностью веб-приложения.
+                            </li>
+                            <li>Убедитесь, что вы понимаете, как использовать основные функции для ввода и отображения
+                                информации о поисково-спасательной операции.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Безопасность превыше всего:</strong>
+                        <ul>
+                            <li>Следуйте инструкциям команды и руководства операции.</li>
+                            <li>Не рискуйте собственным здоровьем или жизнью ради спасения других.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Координация действий:</strong>
+                        <ul>
+                            <li>Активно обменивайтесь информацией с другими участниками операции через приложение для
+                                эффективной координации действий.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Предотвращение ложной информации:</strong>
+                        <ul>
+                            <li>Не вводите ложные данные или недостоверную информацию в веб-приложение, чтобы не вводить в заблуждение других участников операции.</li>
+                            <li>Всегда проверяйте и подтверждайте получаемую информацию, прежде чем вносить её в систему.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Поиск и реагирование:</strong>
+                        <ul>
+                            <li>Внимательно следите за инструкциями по поиску людей в беде, предоставленными в
+                                приложении.</li>
+                            <li>Осуществляйте поиск с особой внимательностью и тщательностью, обращая внимание на
+                                признаки, указывающие на наличие людей в опасной ситуации.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Поддержка и сотрудничество:</strong>
+                        <ul>
+                            <li>В случае обнаружения пострадавших, сохраняйте спокойствие и оказывайте первую помощь,
+                                если это безопасно.</li>
+                            <li>Сотрудничайте с профессиональными спасателями и другими службами для эффективного и
+                                оперативного реагирования на ситуацию.</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p>Спасибо вам за самоотверженность и готовность помогать в поисково-спасательных операциях. Ваш вклад
+                    невероятно ценен.</p>
+                <p>С уважением, Команда разработчиков веб-приложения</p>
+            </div>
+            <div class="content" id="content2" style="display: none;">
+                <h3 class="navTitle">Навигация по сайту</h3>
+                <div class="listNavSite">
+                    <div class="itemNavSite">
+                        <p> <b>1.</b> </p>
+                        <img src="/img/save2.png" class="imgNavSite" alt="">
+                        <p> <b>Форма регистрации инцидентов</b> позволяет пользователю зарегистрировать новый инцидент,
+                            предоставив подробную информацию о происшествии и пропавшем человеке. </p>
+                    </div>
+                    <div class="itemNavSite">
+                        <p> <b>2.</b> </p>
+                        <img src="/img/radar.png" class="imgNavSite" alt="">
+                        <p> <b>Инструмент «Создание IPP» </b> предоставляет
+                            возможность пользователю создать Начальную точку планирования (IPP), которая определяет
+                            начальную точку для планирования и организации поисковых операций.</p>
+                    </div>
+                    <div class="itemNavSite">
+                        <p> <b>3.</b> </p>
+                        <img src="/img/polygon.png" class="imgNavSite" alt="">
+                        <p> <b>Инструмент «Создание теоретической области поиска» </b> предназначен для создания
+                            теоретической области поиска, которая определяет предполагаемую область, в которой может
+                            находиться пропавший человек.
+                        </p>
+                    </div>
+                    <div class="itemNavSite">
+                        <p> <b>4.</b> </p>
+                        <img src="/img/list.png" class="imgNavSite" alt="">
+                        <p> <b>Инструмент «Список инцидентов»</b> предназначен для отображения всех
+                            зарегистрированных инцидентов и управления ими. Этот инструмент позволяет пользователям
+                            быстро просматривать и взаимодействовать с инцидентами.</p>
+                    </div>
+                    <div class="itemNavSite">
+                        <p> <b>5.</b> </p>
+                        <img src="/img/note.png" class="imgNavSite" alt="">
+                        <p> <b>Инструмент «Создание областей заметок»</b> позволяет
+                            пользователям создавать полигональные области с комментариями внутри теоретической области
+                            поиска, описывающими какие-либо ситуации или события, произошедшие в этой области поиска.
+                        </p>
+                    </div>
+                    <div class="itemNavSite">
+                        <p> <b>5.</b> </p>
+                        <img src="/img/basemap.png" class="imgNavSite" alt="">
+                        <p> <b>Инструмент «Изменение типа карты»</b> предоставляет возможность выбора и переключения
+                            между различными типами карт</p>
+                    </div>
+                    <div class="itemNavSite">
+                        <p> <b>6.</b> </p>
+                        <img src="/img/search.png" class="imgNavSite" alt="">
+                        <p> <b>Инструмент «Поиск»</b> предназначен для поиска объектов на карте</p>
+                    </div>
+                    <div class="itemNavSite">
+                        <p> <b>7.</b> </p>
+                        <img src="/img/location.png" class="imgNavSite" alt="">
+                        <p> <b>Инструмент «Использование GPS»</b> предназначен для отображения текущего местоположения
+                            пользователя на карте</p>
+                    </div>
+                    <div class="itemNavSite">
+                        <p> <b>8.</b> </p>
+                        <img src="/img/line.png" class="imgNavSite" alt="">
+                        <p> <b>Инструмент «Построение линии до ближайшего
+                                объекта»</b> предназначен для создания прямой линии между IPP и ближайшим объектом
+                        </p>
+                    </div>
+                    <div class="itemNavSite">
+                        <p> <b>9.</b> </p>
+                        <img src="/img/download.png" class="imgNavSite" alt="">
+                        <p> <b>Инструмент "Загрузка треков маршрутов"</b> предназначен для загрузки и отображения
+                            маршрутных треков пользователя на карте</p>
+                    </div>
+                    <div class="itemNavSite">
+                        <p> <b>10.</b> </p>
+                        <img src="/img/bin.png" class="imgNavSite" alt="">
+                        <p> <b>Инструмент удаления</b> предназначен для очистки карты от всех загруженных объектов.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/components\objects.js" type="text/javascript"></script>
+    <script src="/components\borders.js" type="text/javascript"></script>
+    <script src="/components/script.js"></script>
+    <script src="/components/location.js"></script>
+    <script src="/components/heights2.js" type="text/javascript"></script>
+    <script src="/components/emergency.js" type="text/javascript"></script>
+</body>
+
+</html>
